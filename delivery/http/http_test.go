@@ -2,8 +2,7 @@ package main_test
 
 import (
 	"bytes"
-	"github.com/derrickwilliams/go-clean-architecture/delivery/http"
-	"go"
+	myhttp "github.com/derrickwilliams/go-clean-architecture/delivery/http"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -35,7 +34,13 @@ func (m MockRoundTripper) RoundTrip(r *http.Request) (*http.Response, error) {
 }
 
 func TestHttpDeliveryBootstrap(t *testing.T) {
-	mockTripper := MockRoundTripper{originalTripper: http.DefaultTransport, targetURL: "www.googasdfsle.com", fakeBodyText: "no google for you"}
+	mockTripper := MockRoundTripper{
+		originalTripper: http.DefaultTransport,
+		targetURL:       "www.google.com",
+		fakeBodyText:    "no google for you",
+		T:               t,
+	}
+
 	http.DefaultTransport = mockTripper
 
 	body := myhttp.RequestGoogle()
